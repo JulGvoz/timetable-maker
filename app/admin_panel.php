@@ -92,65 +92,6 @@ if (!isset($_SESSION['type'])) {
         </div>
       </form>
     </div>
-    <div class="container">
-      <?php
-      $statement = mysqli_prepare($mysqli, "SELECT type, description, questions.id AS question_id FROM questions INNER JOIN admins ON questions.school_id = admins.code_id WHERE admins.code_id = ?");
-      mysqli_stmt_bind_param($statement, "i", $_SESSION['user_id']);
-      mysqli_stmt_execute($statement);
-
-      $result = mysqli_stmt_get_result($statement);
-
-      $statement2 = mysqli_prepare($mysqli, "SELECT question_choices.description AS choice_description, question_choices.id AS choice_id FROM question_choices INNER JOIN questions ON question_choices.question_id = questions.id WHERE questions.id = ?");
-      mysqli_stmt_bind_param($statement2, "i", $question_id);
-
-      while ($question = mysqli_fetch_assoc($result)) {
-        echo '<div class="form-group">';
-        echo '<h3>' . $question["description"] . '</h3>';
-        if ($question["type"] == "text") {
-          echo '<textarea class="form-control" rows="3" disabled placeholder="Įveskite tekstą"></textarea>';
-        } else if ($question["type"] == "number") {
-          echo '<input type="number" class="form-control" placeholder="Įveskite skaičių" disabled>';
-        } else {
-          $question_id = $question["question_id"];
-          $result_choices = mysqli_stmt_get_result($statement2);
-
-          if ($result_choices) {
-            while ($question_choice = mysqli_fetch_assoc($result_choices)) {
-              if ($question["type"] == "multiple") {
-                echo '<div class="checkbox">';
-                echo '<label><input type="checkbox" name="checkbox_choice' . $question_id . '" checked>' . $question_choice["choice_description"] . '</label>';
-                echo '</div>';
-              } else {
-                echo '<div class="radio">';
-                echo '<label><input type="radio" name="radio_choice' . $question_id . '" checked>' . $question_choice["choice_description"] . '</label>';
-                echo '</div>';
-              }
-            }
-          }
-        }
-        echo '</div>';
-      }
-      ?>
-    </div>
-    <div class="container">
-      <h2>Pridėti pasirinkimą</h2>
-      <form method="POST" action="add_question.php">
-        <div class="form-group">
-          <div class="input-group mb-3">
-            <input name="question-description" type="text" class="form-control" placeholder="Aprašymas" required>
-            <select name="question-type" class="form-control" data-role="select-dropdown" data-profile="minimal" required>
-              <option class="form-control" value="multiple">Pasirinkti keletą iš sąrašo</option>
-              <option class="form-control" value="single">Pasirinkti vieną iš sąrašo</option>
-              <option class="form-control" value="text">Įrašyti tekstą</option>
-              <option class="form-control" value="number">Įrašyti skaičių</option>
-            </select>
-            <div class="input-group-append">
-              <button class="btn btn-success" type="submit">Pridėti</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
   </div>
 </body>
 
