@@ -41,18 +41,19 @@ if (!isset($_SESSION['type'])) {
 
 <body>
   <nav class="navbar navbar-expand-sm bg-info navbar-light fixed-top">
-    <h2>Viso valandų: 25 <small class="text-light">(Turi būti nuo 28 ligi 35)</small></h2>
+    <h2>Viso valandų: <span id="total-hour-count">25</span> <small class="text-light">(Turi būti nuo 28 ligi 35)</small></h2>
   </nav>
   <div class="container-fluid h-100">
-    <div class="jumbotron">
+    <div class="jumbotron" style="background-color:lightgrey">
       <h1>Mokinio tvarkaraščio sudarymas</h1>
+      <p>Užrašai kaip <code>3/4 valandos</code> reiškia, kad 3-ioje klasėje bus 3 valandos per savaitę, o 4-oje klasėje bus 4 valandos per savaitę.</p>
       <h2>Dorinis ugdymas <small class="text-muted">(1 valanda per savaitę)</small></h2>
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-primary active">
-          <input type="radio" name="options" id="etika-1" autocomplete="off" checked> Etika
+          <input type="radio" name="options" id="dorinis-etika-1" autocomplete="off" checked> Etika
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="tikyba-1" autocomplete="off"> Tikyba
+          <input type="radio" name="options" id="dorinis-tikyba-1" autocomplete="off"> Tikyba
         </label>
       </div>
 
@@ -79,19 +80,19 @@ if (!isset($_SESSION['type'])) {
       <h2>Pirma kalba <small class="text-muted">3 arba 5 valandos per savaitę</small></h2>
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-primary active">
-          <input type="radio" name="options" id="pirma-3" autocomplete="off" checked>3 valandos
+          <input type="radio" name="options" id="pirmaval-3" autocomplete="off" checked>3 valandos
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="pirma-5" autocomplete="off">5 valandos
+          <input type="radio" name="options" id="pirmaval-5" autocomplete="off">5 valandos
         </label>
       </div>
       <p></p>
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-primary active">
-          <input type="radio" name="options" id="pirma-anglu" autocomplete="off" checked>Anglų kalba
+          <input type="radio" name="options" id="pirmakalba-anglu" autocomplete="off" checked>Anglų kalba
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="pirma-vokieciu" autocomplete="off">Vokiečių kalba
+          <input type="radio" name="options" id="pirmakalba-vokieciu" autocomplete="off">Vokiečių kalba
         </label>
       </div>
 
@@ -158,7 +159,7 @@ if (!isset($_SESSION['type'])) {
           <input type="radio" name="options" id="geo-3" autocomplete="off">3 valandos
         </label>
       </div>
-      
+
 
       <h2>Gamtos mokslai <small class="text-muted">Reikia pasirinkti bent vieną</small></h2>
       <h3>Biologija <small class="text-muted">2 arba 4 valandos per savaitę</small></h3>
@@ -201,38 +202,38 @@ if (!isset($_SESSION['type'])) {
       <h2>Sporto šaka <small class="text-muted"></small></h2>
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-primary active">
-          <input type="radio" name="options" id="fizinis-2" autocomplete="off" checked>Fizinis ugdymas <small class="">2 valandos</small>
+          <input type="radio" name="options" id="sportas-fizinis-2" autocomplete="off" checked>Fizinis ugdymas <small class="">2 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="fizinis-4" autocomplete="off">Fizinis ugdymas <small class="">4 valandos</small>
+          <input type="radio" name="options" id="sportas-fizinis-4" autocomplete="off">Fizinis ugdymas <small class="">4 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="sportinissokis-2" autocomplete="off">Sportinis šokis <small class="">2 valandos</small>
+          <input type="radio" name="options" id="sportas-sportinissokis-2" autocomplete="off">Sportinis šokis <small class="">2 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="krepsinis-2" autocomplete="off">Krepšinis <small class="">2 valandos</small>
+          <input type="radio" name="options" id="sportas-krepsinis-2" autocomplete="off">Krepšinis <small class="">2 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="tinklinis-2" autocomplete="off">Tinklinis <small class="">2 valandos</small>
+          <input type="radio" name="options" id="sportas-tinklinis-2" autocomplete="off">Tinklinis <small class="">2 valandos</small>
         </label>
       </div>
 
       <h2>Informacinės technologijos <small class="text-muted"></small></h2>
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-primary active">
-          <input type="radio" name="options" id="program-3" autocomplete="off" checked>Programavimas <small class="">3/2 valandos</small>
+          <input type="radio" name="options" id="it-program-3" autocomplete="off" checked>Programavimas <small class="">3/2 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="program-2" autocomplete="off">Programavimas <small class="">2 valandos</small>
+          <input type="radio" name="options" id="it-program-2" autocomplete="off">Programavimas <small class="">2 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="leidyba-3" autocomplete="off">Elektroninė leidyba <small class="">3 valandos</small>
+          <input type="radio" name="options" id="it-leidyba-3" autocomplete="off">Elektroninė leidyba <small class="">3 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="duomenu-2" autocomplete="off">Duomenų bazės <small class="">2 valandos</small>
+          <input type="radio" name="options" id="it-duomenu-2" autocomplete="off">Duomenų bazės <small class="">2 valandos</small>
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="informatika-1" autocomplete="off">Informatika <small class="">1 valanda</small>
+          <input type="radio" name="options" id="it-informatika-1" autocomplete="off">Informatika <small class="">1 valanda</small>
         </label>
       </div>
 
@@ -269,9 +270,201 @@ if (!isset($_SESSION['type'])) {
           <input type="radio" name="options" id="ekonomika-1" autocomplete="off">Ekonomika ir verslumas
         </label>
       </div>
-    
+
+      <h2>Menai ir technologijos <small class="text-muted">Pasirinkti bent vieną</small></h2>
+      <h3>Menai <small class="text-muted">Galima rinktis du menus</small></h3>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="daile-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="daile-2" autocomplete="off">Dailė <small class="">2 valandos</small>
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="daile-3" autocomplete="off">Dailė <small class="">3 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="grafinis-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="grafinis-2" autocomplete="off">Grafinis dizainas <small class="">2 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="muzika-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="muzika-2" autocomplete="off">Muzika <small class="">2 valandos</small>
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="muzika-3" autocomplete="off">Muzika <small class="">3 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="teatras-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="teatras-2" autocomplete="off">Teatras <small class="">2 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="filmai-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="filmai-2" autocomplete="off">Filmų kūrimas <small class="">2 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="foto-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="foto-2" autocomplete="off">Fotografija <small class="">2 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="sokis-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="sokis-2" autocomplete="off">Šokis <small class="">2 valandos</small>
+        </label>
+      </div>
+      <h3>Technologijos <small class="text-muted">Rinktis daugiausia vieną</small></h3>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="tekstile-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="tekstile-2" autocomplete="off">Tekstilė ir apranga <small class="">2 valandos</small>
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="tekstile-3" autocomplete="off">Tekstilė ir apranga <small class="">3 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="mityba-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="mityba-2" autocomplete="off">Turizmas ir mityba <small class="">2 valandos</small>
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="mityba-3" autocomplete="off">Turizmas ir mityba <small class="">3 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" id="medzio-none" autocomplete="off" checked>Nesirinkti
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="medzio-2" autocomplete="off">Statyba ir medžio apdirbimas <small class="">2 valandos</small>
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="medzio-3" autocomplete="off">Statyba ir medžio apdirbimas <small class="">3 valandos</small>
+        </label>
+      </div>
+      <p></p>
+      <h2>Reikalavimai</h2>
+      <div id="require-hours" class="alert alert-danger" role="alert">
+        Tinkamas valandų skaičius (turi būti nuo 28 valandų iki 35 valandų per savaitę)
+      </div>
+      <div id="require-social" class="alert alert-danger" role="alert">
+        Pasirinktas bent vienas socialinis mokslas
+      </div>
+      <div id="require-science" class="alert alert-danger" role="alert">
+        Pasirinktas bent vienas gamtos mokslas
+      </div>
+      <div id="require-arts" class="alert alert-danger" role="alert">
+        Pasinktas bent vienas meno ar technologijos dalykas
+      </div>
+      <div id="require-languages" class="alert alert-danger" role="alert">
+        Nesikartoja pirma/antra/trečia užsienio kalbos
+      </div>
+      <div id="require-art-limits" class="alert alert-danger" role="alert">
+        Pasirinkta daugiausia du menų dalykai, arba daugiausia vienas meno ir vienas technologijų dalykas
+      </div>
     </div>
   </div>
+  <script>
+    var selections = {};
+    for (var i = 0; i < $(".active").length; i++) {
+      selections[$(".active")[i].control.id.split("-")[0]] = $(".active")[i].control.id;
+    }
+    var total_hours = 0;
+
+    function calculate_hours() {
+      total_hours = 0
+      for (var prop in selections) {
+        if (selections.hasOwnProperty(prop)) {
+          total_hours += +selections[prop].replace(/[^0-9]/g, "");
+        }
+      }
+      $("#total-hour-count").text(total_hours);
+    }
+
+    function shared_property_hours(arr) {
+      var hour_value = 0;
+      for (var prop in arr) {
+        if (selections.hasOwnProperty(arr[prop])) {
+          hour_value += +selections[arr[prop]].replace(/[^0-9]/g, "");
+        }
+      }
+      return hour_value;
+    }
+
+    function tgl(id, bl) {
+      if (bl) {
+        $(id).removeClass("alert-danger");
+        $(id).addClass("alert-success");
+      } else {
+        $(id).removeClass("alert-success");
+        $(id).addClass("alert-danger");
+      }
+    }
+
+    function validate_hours() {
+      calculate_hours();
+      tgl("#require-hours", total_hours >= 28 && total_hours <= 35);
+
+    }
+
+    function validate_socials() {
+      tgl("#require-social", shared_property_hours(["istorija", "geo"]) > 0);
+    }
+
+    function validate_sciences() {
+      tgl("#require-science", shared_property_hours(["bio", "fiz", "che"]) > 0);
+    }
+
+    function validate_arts() {
+      tgl("#require-arts", shared_property_hours(["daile", "grafinis", "muzika", "teatras", "filmai", "foto", "sokis", "tekstile", "mityba", "medzio"]) > 0);
+    }
+
+    validate_hours();
+
+    $("input").on('change', function(obj) {
+      selections[obj.target.id.split("-")[0]] = obj.target.id;
+      console.log(selections);
+      validate_hours();
+      validate_socials();
+      validate_sciences();
+      validate_arts();
+    });
+  </script>
 </body>
 
 </html>
