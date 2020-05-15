@@ -17,7 +17,6 @@ if (!isset($_POST['first_name']) || !isset($_POST['last_name'])) {
 }
 ?>
 <?php
-require_once 'clean_text.php';
 
 $mysqli = mysqli_connect("localhost", "admin", "Bind-Defeat-Journey-Interest-Sound-Stair-Insurance-Hinder-Influence-Sensitive-4", "users");
 if (mysqli_connect_errno()) {
@@ -26,8 +25,8 @@ if (mysqli_connect_errno()) {
 }
 
 $statement = mysqli_prepare($mysqli, 'INSERT INTO accounts (code, type) VALUES (?, "student")');
-$first_name = clean_text($_POST['first_name'], true);
-$last_name = clean_text($_POST['last_name'], true);
+$first_name = preg_replace("/[^0-9A-Za-z]/g", '', $_POST["first_name"]);
+$last_name = preg_replace("/[^0-9A-Za-z]/g", '', $_POST["last_name"]);
 $code = substr($first_name, 0, 3) . substr($last_name, 0, 4) . random_int(100000000, 999999999);
 mysqli_stmt_bind_param($statement, "s", $code);
 mysqli_stmt_execute($statement);
