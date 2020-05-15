@@ -25,8 +25,8 @@ if (mysqli_connect_errno()) {
 }
 
 $statement = mysqli_prepare($mysqli, 'INSERT INTO accounts (code, type) VALUES (?, "student")');
-$first_name = preg_replace("/[^A-Za-z]/g", '', $_POST["first_name"]);
-$last_name = preg_replace("/[^A-Za-z]/g", '', $_POST["last_name"]);
+$first_name = preg_replace("/[^A-Za-z]/", '', $_POST["first_name"]);
+$last_name = preg_replace("/[^A-Za-z]/", '', $_POST["last_name"]);
 $code = substr($first_name, 0, 3) . substr($last_name, 0, 4) . random_int(100000000, 999999999);
 mysqli_stmt_bind_param($statement, "s", $code);
 mysqli_stmt_execute($statement);
