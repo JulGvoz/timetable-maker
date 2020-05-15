@@ -397,7 +397,7 @@ if (!isset($_SESSION['type'])) {
       <div id="require-art-limits" class="alert alert-danger" role="alert">
         Pasirinkta daugiausia du menų dalykai, arba daugiausia vienas meno ir vienas technologijų dalykas
       </div>
-      <form action="submit_response.php">
+      <form action="submit_response.php" method="POST">
         <div id="submit-div" class="form-group">
           <input class="btn btn-success" type="submit" id="submit-button" value="Pateikti" disabled>
         </div>
@@ -409,7 +409,7 @@ if (!isset($_SESSION['type'])) {
     for (var i = 0; i < $(".active").length; i++) {
       selections[$(".active")[i].control.id.split("-")[0]] = $(".active")[i].control.id;
       $("#submit-div").append(' \
-      <input id="hidden-input-' + $(".active")[i].control.id.split("-")[0] + '" type="hidden" name="choices[]" value=' + $(".active")[i].control.id + '>\
+      <input id="hidden-input-' + $(".active")[i].control.id.split("-")[0] + '" type="hidden" name="choices[' + $(".active")[i].control.id.split("-")[0] + ']" value=' + $(".active")[i].control.id + '>\
       ');
     }
     var total_hours = 0;
