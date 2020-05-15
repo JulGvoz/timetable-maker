@@ -44,7 +44,7 @@ if (!isset($_SESSION['type'])) {
     <h2>Viso valandų: <span id="total-hour-count">25</span> <small class="text-light">(Turi būti nuo 28 ligi 35)</small></h2>
   </nav>
   <div class="container-fluid h-100">
-    <div class="jumbotron" style="background-color:lightgrey">
+    <div class="jumbotron" style="background-color:rgb(255, 225, 255)">
       <h1>Mokinio tvarkaraščio sudarymas</h1>
       <p>Užrašai kaip <code>3/4 valandos</code> reiškia, kad 3-ioje klasėje bus 3 valandos per savaitę, o 4-oje klasėje bus 4 valandos per savaitę.</p>
       <h2>Dorinis ugdymas <small class="text-muted">(1 valanda per savaitę)</small></h2>
@@ -398,8 +398,8 @@ if (!isset($_SESSION['type'])) {
         Pasirinkta daugiausia du menų dalykai, arba daugiausia vienas meno ir vienas technologijų dalykas
       </div>
       <form action="submit_response.php">
-        <div class="form-group">
-          <input class="btn btn-success" type="submit" id="submit-button" value="Pateikti">
+        <div id="submit-div" class="form-group">
+          <input class="btn btn-success" type="submit" id="submit-button" value="Pateikti" disabled>
         </div>
       </form>
     </div>
@@ -408,6 +408,9 @@ if (!isset($_SESSION['type'])) {
     var selections = {};
     for (var i = 0; i < $(".active").length; i++) {
       selections[$(".active")[i].control.id.split("-")[0]] = $(".active")[i].control.id;
+      $("#submit-div").append(' \
+      <input id="hidden-input-' + $(".active")[i].control.id.split("-")[0] + '" type="hidden" name="choices[]" value=' + $(".active")[i].control.id + '>\
+      ');
     }
     var total_hours = 0;
 
@@ -507,15 +510,21 @@ if (!isset($_SESSION['type'])) {
 
     validate_hours();
 
-    $("input").on('change', function(obj) {
+    $('input[type="radio"').on('change', function(obj) {
       selections[obj.target.id.split("-")[0]] = obj.target.id;
-      console.log(selections);
+      $('#hidden-input-' + obj.target.id.split("-")[0]).val(obj.target.id);
+      console.log($('#hidden-input-' + obj.target.id.split("-")[0]));
       validate_hours();
       validate_socials();
       validate_sciences();
       validate_arts();
       validate_languages();
       validate_arts_technology();
+      if ($(".alert-danger").length == 0) {
+        $("#submit-button").removeAttr("disabled");
+      } else {
+        $("#submit-button").attr("disabled", true);
+      }
     });
   </script>
 </body>
