@@ -111,7 +111,7 @@ if (!isset($_SESSION['type'])) {
           <input type="radio" name="options" id="antra-prancuzu-3" autocomplete="off">Prancūzų kalba
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="options" id="antra-prancuzu-3" autocomplete="off">Rusų kalba
+          <input type="radio" name="options" id="antra-rusu-3" autocomplete="off">Rusų kalba
         </label>
       </div>
 
@@ -397,6 +397,11 @@ if (!isset($_SESSION['type'])) {
       <div id="require-art-limits" class="alert alert-danger" role="alert">
         Pasirinkta daugiausia du menų dalykai, arba daugiausia vienas meno ir vienas technologijų dalykas
       </div>
+      <form action="submit_response.php">
+        <div class="form-group">
+          <input class="btn btn-success" type="submit" id="submit-button" value="Pateikti">
+        </div>
+      </form>
     </div>
   </div>
   <script>
@@ -454,6 +459,52 @@ if (!isset($_SESSION['type'])) {
       tgl("#require-arts", shared_property_hours(["daile", "grafinis", "muzika", "teatras", "filmai", "foto", "sokis", "tekstile", "mityba", "medzio"]) > 0);
     }
 
+    function validate_languages() {
+      var first = selections["pirmakalba"].split("-");
+      var second = selections["antra"].split("-");
+      var third = selections["trecia"].split("-");
+
+      var language_selections = [];
+      for (var i = 0; i < first.length; i++) {
+        language_selections[first[i]] = (language_selections[first[i]] || 0) + 1;
+      }
+      for (var i = 0; i < second.length; i++) {
+        language_selections[second[i]] = (language_selections[second[i]] || 0) + 1;
+      }
+      for (var i = 0; i < third.length; i++) {
+        language_selections[third[i]] = (language_selections[third[i]] || 0) + 1;
+      }
+
+      var assert_correct = true;
+      var languages = ["anglu", "rusu", "vokieciu", "prancuzu", "ispanu"]
+      for (var i = 0; i < languages.length; i++) {
+        if ((language_selections[languages[i]] || 0) > 1) {
+          assert_correct = false;
+        }
+      }
+      tgl("#require-languages", assert_correct);
+    }
+
+    function validate_arts_technology() {
+      var arts = ["daile", "grafinis", "muzika", "teatras", "filmai", "foto", "sokis"];
+      var tech = ["tekstile", "mityba", "medzio"];
+
+      var arts_selected = arts.length;
+      var tech_selected = tech.length;
+
+      for (var i = 0; i < arts.length; i++) {
+        if (selections[arts[i]].split("-").includes("none")) {
+          arts_selected--;
+        }
+      }
+      for (var i = 0; i < tech.length; i++) {
+        if (selections[tech[i]].split("-").includes("none")) {
+          tech_selected--;
+        }
+      }
+      tgl("#require-art-limits", (arts_selected <= 2 && tech_selected == 0) || (arts_selected <= 1 && tech_selected <= 1));
+    }
+
     validate_hours();
 
     $("input").on('change', function(obj) {
@@ -463,6 +514,8 @@ if (!isset($_SESSION['type'])) {
       validate_socials();
       validate_sciences();
       validate_arts();
+      validate_languages();
+      validate_arts_technology();
     });
   </script>
 </body>
