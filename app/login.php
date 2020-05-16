@@ -36,6 +36,12 @@ if ($result) {
       header("Location: admin_panel.php");
       exit();
     } else {
+      $sql = "SELECT students.id AS student_id FROM accounts INNER JOIN students ON students.code_id = accounts.id WHERE accounts.id = " . $_SESSION["user_id"];
+      $result = mysqli_query($mysqli, $sql);
+
+      $row = mysqli_fetch_assoc($result);
+      $_SESSION["student_id"] = $row["student_id"];
+
       header("Location: student_choice.php");
       exit();
     }
