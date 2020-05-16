@@ -49,6 +49,7 @@ if (!isset($_SESSION['type'])) {
         <thead>
           <tr>
             <th style="text-align: center">Pateikta</th>
+            <th>Pateikimo laikas</th>
             <th>Vardas</th>
             <th>Pavardė</th>
             <th>Kodas</th>
@@ -69,16 +70,22 @@ if (!isset($_SESSION['type'])) {
 
           $result = mysqli_stmt_get_result($statement);
           while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $count_responses_sql = "SELECT COUNT(*) AS cnt FROM responses WHERE student_id = " . $row["student_id"];
+            $count_responses_sql = "SELECT timestamp FROM responses WHERE student_id = " . $row["student_id"];
             $responses_result = mysqli_query($mysqli, $count_responses_sql);
-            $response_count = mysqli_fetch_assoc($responses_result)["cnt"];
+            $response_count = mysqli_num_rows($responses_result);
+            if ($response_count > 0) {
+              $response_time = mysqli_fetch_assoc($responses_result)["timestamp"];
+            }
+
 
             echo '<tr>';
 
             if ($response_count == 0) {
               echo '<td><img src="cancel.svg" class="completion-icon"></td>';
+              echo '<td>-</td>';
             } else {
               echo '<td><img src="confirmed.svg" class="completion-icon"></td>';
+              echo '<td>' . $response_time . '</td>';
             }
 
             echo '<td>' . $row["first_name"] . '</td>';
