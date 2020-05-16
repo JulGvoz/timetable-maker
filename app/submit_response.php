@@ -24,19 +24,19 @@ if (mysqli_connect_errno()) {
   exit();
 }
 
-$get_student_id_stmt = "SELECT students.id AS id FROM students INNER JOIN accounts ON accounts.id = students.code_id WHERE code_id = " . $_SESSION["user_id"];
-$get_student_id_result = mysqli_query($mysqli, $get_student_id_stmt);
-
-
-
-$check_statement = mysqli_prepare($mysqli, 'SELECT COUNT(*) AS response_count FROM responses INNER JOIN students ON student_id = students.id WHERE students.code_id = ? AND responses.subject = ?');
-mysqli_stmt_bind_param($check_statement, "s", $response_subject);
+$delete_sql = "DELETE FROM responses WHERE student_id = " . $_SESSION["student_id"];
+mysqli_query($mysqli, $delete_sql);
 
 $insert_statement = mysqli_prepare($mysqli, 'INSERT INTO responses(student_id, subject, response) VALUES (?, ?, ?)');
+mysqli_stmt_bind_param($insert_statement, "iss", $_SESSION["student_id"], $subject, $response);
 
+foreach ($_POST["choices"] as $key => $value) {
+  $subject = preg_replace('/[^0-9A-Za-z\-]/', "0", $key);
+  $response = preg_replace('/[^0-9A-Za-z\-]/', "0", $value);
 
-print_r($_POST);
+  mysqli_stmt_execute($insert_statement);
+}
 
-//header("Location: index.php");
-//exit();
+header("Location: index.php?response=success");
+exit();
 ?>
