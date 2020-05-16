@@ -28,6 +28,11 @@ if (!isset($_SESSION['type'])) {
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   <style>
+    .completion-icon {
+      height: 32px;
+      width: 100%;
+      object-fit: contain;
+    }
   </style>
   <title>Valdymo Skydas</title>
 </head>
@@ -43,6 +48,7 @@ if (!isset($_SESSION['type'])) {
       <table class="table">
         <thead>
           <tr>
+            <th style="text-align: center">Pateikta</th>
             <th>Vardas</th>
             <th>Pavardė</th>
             <th>Kodas</th>
@@ -63,13 +69,24 @@ if (!isset($_SESSION['type'])) {
 
           $result = mysqli_stmt_get_result($statement);
           while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $count_responses_sql = "SELECT COUNT(*) AS cnt FROM responses WHERE student_id = " . $row["student_id"];
+            $responses_result = mysqli_query($mysqli, $count_responses_sql);
+            $response_count = mysqli_fetch_assoc($responses_result)["cnt"];
+
             echo '<tr>';
+
+            if ($response_count == 0) {
+              echo '<td><img src="cancel.svg" class="completion-icon"></td>';
+            } else {
+              echo '<td><img src="confirmed.svg" class="completion-icon"></td>';
+            }
+
             echo '<td>' . $row["first_name"] . '</td>';
             echo '<td>' . $row["last_name"] . '</td>';
             echo '<td><code>' . $row["code"] . '</code></td>';
             echo '<td><form action="remove_student.php" method="post">
             <input type="hidden" name="student_id" value="' . $row["student_id"] . '">
-            <input type="submit" name="delete_button" value="Ištrinti" class="btn btn-danger">
+            <input type="submit" name="delete_button" value="Ištrinti mokinį" class="btn btn-danger">
             </form>
             </td>';
             echo '<tr>';
