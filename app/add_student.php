@@ -1,18 +1,30 @@
 <?php
-session_start();
-?>
-<?php
-if (!isset($_SESSION['type'])) {
-  header("Location: index.php");
-  exit();
-} else if ($_SESSION["type"] != "admin") {
+if (!isset($_POST["code"])) {
   header("Location: index.php");
   exit();
 }
-?>
-<?php
+
+$mysqli = mysqli_connect("localhost", "admin", "Bind-Defeat-Journey-Interest-Sound-Stair-Insurance-Hinder-Influence-Sensitive-4", "users");
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: (" . mysqli_connect_errno() . ") " . mysqli_connect_error();
+  exit();
+}
+
+$statement = mysqli_prepare($mysqli, 'SELECT accounts.id AS user_id FROM accounts WHERE code = ? AND type = "admin"');
+mysqli_stmt_bind_param($statement, "s", $_POST["code"]);
+mysqli_stmt_execute($statement);
+
+$result = mysqli_stmt_get_result($statement);
+if (mysqli_num_rows($result) == 0) {
+  header("Location: index.php");
+  exit();
+}
+$row = mysqli_fetch_assoc($result);
+
+$user_id = $row["user_id"];
+
 if (!isset($_POST['first_name']) || !isset($_POST['last_name'])) {
-  header("Location: admin_panel.php");
+  header("Location: admin_panel.php?code=" . $_POST["code"] . "&superadmin_code" = $_POST["superadmin_code"]);
   exit();
 }
 ?>

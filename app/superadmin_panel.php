@@ -48,7 +48,8 @@ $row = mysqli_fetch_assoc($result);
           <tr>
             <th>Grupės pavadinimas</th>
             <th>Kodas</th>
-            <th>Ištrinti</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -66,6 +67,12 @@ $row = mysqli_fetch_assoc($result);
             echo '<tr>';
             echo '<td>' . $row["groupname"] . '</td>';
             echo '<td><code>' . $row["code"] . '</code></td>';
+            echo '<td><form action="admin_panel.php" method="get">
+            <input type="hidden" name="code" value="' . $row["code"] . '">
+            <input type="hidden" name="superadmin_code" value="' . $_GET["code"] . '">
+            <button type="submit" class="btn btn-primary">Peržiurėti</button>
+            </form>
+            </td>';
             echo '<td><form action="remove_admin.php" method="post">
             <input type="hidden" name="admin_id" value="' . $row["admin_id"] . '">
             <input type="submit" name="delete_button" value="Delete" class="btn btn-danger">
