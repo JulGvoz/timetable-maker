@@ -35,10 +35,9 @@ if (!isset($_SESSION['type'])) {
       <table class="table">
         <thead>
           <tr>
-            <th>account_id</th>
-            <th>admin_id</th>
-            <th>code</th>
-            <th>Delete</th>
+            <th>Grupės pavadinimas</th>
+            <th>Kodas</th>
+            <th>Ištrinti</th>
           </tr>
         </thead>
         <tbody>
@@ -54,8 +53,6 @@ if (!isset($_SESSION['type'])) {
 
           while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             echo '<tr>';
-            echo '<td>' . $row["account_id"] . '</td>';
-            echo '<td>' . $row["admin_id"] . '</td>';
             echo '<td><code>' . $row["code"] . '</code></td>';
             echo '<td><form action="remove_admin.php" method="post">
             <input type="hidden" name="admin_id" value="' . $row["admin_id"] . '">

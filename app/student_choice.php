@@ -12,6 +12,27 @@ if (!isset($_SESSION['type'])) {
   header("Location: index.php");
   exit();
 }
+
+if (!isset($_GET["code"])) {
+  header("Location: index.php");
+  exit();
+}
+
+$mysqli = mysqli_connect("localhost", "admin", "Bind-Defeat-Journey-Interest-Sound-Stair-Insurance-Hinder-Influence-Sensitive-4", "users");
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: (" . mysqli_connect_errno() . ") " . mysqli_connect_error();
+  exit();
+}
+
+$statement = mysqli_prepare($mysqli, 'SELECT * FROM accounts WHERE code = ? AND type = "student"');
+mysqli_stmt_bind_param($statement, "s", $_GET["code"]);
+mysqli_stmt_execute($statement);
+
+$result = mysqli_stmt_get_result($statement);
+if (mysqli_num_rows($result) == 0) {
+  header("Location: index.php");
+  exit();
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -401,6 +422,9 @@ if (!isset($_SESSION['type'])) {
         <div id="submit-div" class="form-group">
           <input class="btn btn-success" type="submit" id="submit-button" value="Pateikti" disabled>
         </div>
+        <input type="hidden" name="code" value="<?php
+        echo $_GET["code"];
+        ?>">
       </form>
     </div>
   </div>
