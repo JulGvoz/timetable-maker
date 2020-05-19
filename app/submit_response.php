@@ -39,8 +39,6 @@ foreach ($_POST["choices"] as $key => $value) {
   $subject = preg_replace('/[^0-9A-Za-z\-]/', "0", $key);
   $response = preg_replace('/[^0-9A-Za-z\-]/', "0", $value);
 
-  
-
   mysqli_stmt_execute($insert_statement);
 }
 

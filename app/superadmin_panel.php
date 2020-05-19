@@ -1,14 +1,25 @@
 <?php
-session_start();
-?>
-<?php
-if (!isset($_SESSION['type'])) {
-  header("Location: index.php");
-  exit();
-} else if ($_SESSION["type"] != "superadmin") {
+if (!isset($_GET["code"])) {
   header("Location: index.php");
   exit();
 }
+
+$mysqli = mysqli_connect("localhost", "admin", "Bind-Defeat-Journey-Interest-Sound-Stair-Insurance-Hinder-Influence-Sensitive-4", "users");
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: (" . mysqli_connect_errno() . ") " . mysqli_connect_error();
+  exit();
+}
+
+$statement = mysqli_prepare($mysqli, 'SELECT accounts.id AS user_id FROM accounts WHERE code = ? AND type = "superadmin"');
+mysqli_stmt_bind_param($statement, "s", $_GET["code"]);
+mysqli_stmt_execute($statement);
+
+$result = mysqli_stmt_get_result($statement);
+if (mysqli_num_rows($result) == 0) {
+  header("Location: index.php");
+  exit();
+}
+$row = mysqli_fetch_assoc($result);
 ?>
 <!doctype html>
 <html lang="en">
@@ -30,7 +41,7 @@ if (!isset($_SESSION['type'])) {
 </head>
 
 <body>
-  <div class="jumbotron ">
+  <div class="jumbotron">
     <div class="container">
       <table class="table">
         <thead>
@@ -48,11 +59,12 @@ if (!isset($_SESSION['type'])) {
             exit();
           }
 
-          $sql = 'SELECT code , admins.id AS admin_id, accounts.id AS account_id FROM admins INNER JOIN accounts ON admins.code_id = accounts.id WHERE accounts.type = "admin"';
+          $sql = 'SELECT groupname, code , admins.id AS admin_id, accounts.id AS account_id FROM admins INNER JOIN accounts ON admins.code_id = accounts.id WHERE accounts.type = "admin"';
           $result = mysqli_query($mysqli, $sql);
 
           while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             echo '<tr>';
+            echo '<td>' . $row["groupname"] . '</td>';
             echo '<td><code>' . $row["code"] . '</code></td>';
             echo '<td><form action="remove_admin.php" method="post">
             <input type="hidden" name="admin_id" value="' . $row["admin_id"] . '">
@@ -65,14 +77,17 @@ if (!isset($_SESSION['type'])) {
         </tbody>
       </table>
       <form method="POST" action="add_admin.php">
+        <input type="hidden" name="code" value="<?php
+                                                echo $_GET["code"];
+                                                ?>">
         <div class="form-group">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text">Add an Admin</span>
+              <span class="input-group-text">Pridėti grupę</span>
             </div>
-            <input name="code" type="text" class="form-control" placeholder="Code" required>
+            <input name="groupname" type="text" class="form-control" placeholder="Grupės pavadinimas" required>
             <div class="input-group-append">
-              <button class="btn btn-success" type="submit">Add</button>
+              <button class="btn btn-success" type="submit">Pridėti</button>
             </div>
           </div>
         </div>
