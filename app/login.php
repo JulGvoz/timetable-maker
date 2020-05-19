@@ -26,23 +26,15 @@ if ($result) {
     exit();
   } else {
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $_SESSION["code"] = $row["code"];
-    $_SESSION["type"] = $row["type"];
-    $_SESSION["user_id"] = $row["id"];
     if ($row["type"] == "superadmin") {
-      header("Location: superadmin_panel.php");
+      header("Location: superadmin_panel.php?code=" . $row["code"]);
       exit();
     } else if ($row["type"] == "admin") {
-      header("Location: admin_panel.php");
+      header("Location: admin_panel.php?code=" . $row["code"]);
       exit();
     } else {
-      $sql = "SELECT students.id AS student_id FROM accounts INNER JOIN students ON students.code_id = accounts.id WHERE accounts.id = " . $_SESSION["user_id"];
-      $result = mysqli_query($mysqli, $sql);
 
-      $row = mysqli_fetch_assoc($result);
-      $_SESSION["student_id"] = $row["student_id"];
-
-      header("Location: student_choice.php");
+      header("Location: student_choice.php?code=" . $row["code"]);
       exit();
     }
   }
