@@ -44,6 +44,10 @@ foreach ($_POST["choices"] as $key => $value) {
   mysqli_stmt_execute($insert_statement);
 }
 
+if (isset($_POST["admin_code"])) {
+  header("Location: admin_panel.php?code=" . $_POST["admin_code"]);
+  exit();
+}
 
 header("Location: index.php?response=success");
 exit();

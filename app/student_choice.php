@@ -414,8 +414,13 @@ if (mysqli_num_rows($result) == 0) {
           <input class="btn btn-success" type="submit" id="submit-button" value="Pateikti" disabled>
         </div>
         <input type="hidden" name="code" value="<?php
-        echo $_GET["code"];
-        ?>">
+                                                echo $_GET["code"];
+                                                ?>">
+        <?php
+        if (isset($_GET["admin_code"])) {
+          echo '<input type="hidden" name="admin_code" value="' . $_GET["admin_code"] . '">';
+        }
+        ?>
       </form>
     </div>
   </div>

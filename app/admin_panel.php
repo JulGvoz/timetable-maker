@@ -1,17 +1,32 @@
 <?php
-session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ?>
 <?php
-if (!isset($_SESSION['type'])) {
-  header("Location: index.php");
-  exit();
-} else if ($_SESSION["type"] != "admin") {
+if (!isset($_GET["code"])) {
   header("Location: index.php");
   exit();
 }
+
+$mysqli = mysqli_connect("localhost", "admin", "Bind-Defeat-Journey-Interest-Sound-Stair-Insurance-Hinder-Influence-Sensitive-4", "users");
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: (" . mysqli_connect_errno() . ") " . mysqli_connect_error();
+  exit();
+}
+
+$statement = mysqli_prepare($mysqli, 'SELECT accounts.id AS user_id FROM accounts WHERE code = ? AND type = "admin"');
+mysqli_stmt_bind_param($statement, "s", $_GET["code"]);
+mysqli_stmt_execute($statement);
+
+$result = mysqli_stmt_get_result($statement);
+if (mysqli_num_rows($result) == 0) {
+  header("Location: index.php");
+  exit();
+}
+$row = mysqli_fetch_assoc($result);
+
+$user_id = $row["user_id"];
 ?>
 <!doctype html>
 <html lang="en">
@@ -42,7 +57,7 @@ if (!isset($_SESSION['type'])) {
     <div class="container">
       <h2>Mokinių sąrašas
         <?php
-        echo "(" . substr($_SESSION["code"], 0, 7) . ")";
+        echo "(" . substr($_GET["code"], 0, 7) . ")";
         ?>
       </h2>
       <table class="table">
@@ -54,18 +69,14 @@ if (!isset($_SESSION['type'])) {
             <th>Pavardė</th>
             <th>Kodas</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $mysqli = mysqli_connect("localhost", "admin", "Bind-Defeat-Journey-Interest-Sound-Stair-Insurance-Hinder-Influence-Sensitive-4", "users");
-          if (mysqli_connect_errno()) {
-            echo "Failed to connect to MySQL: (" . mysqli_connect_errno() . ") " . mysqli_connect_error();
-            exit();
-          }
 
           $statement = mysqli_prepare($mysqli, "SELECT first_name, last_name, code, students.id AS student_id FROM students INNER JOIN accounts ON students.code_id = accounts.id WHERE students.school_id = ?");
-          mysqli_stmt_bind_param($statement, "i", $_SESSION['user_id']);
+          mysqli_stmt_bind_param($statement, "i", $user_id);
           mysqli_stmt_execute($statement);
 
           $result = mysqli_stmt_get_result($statement);
@@ -91,6 +102,12 @@ if (!isset($_SESSION['type'])) {
             echo '<td>' . $row["first_name"] . '</td>';
             echo '<td>' . $row["last_name"] . '</td>';
             echo '<td><code>' . $row["code"] . '</code></td>';
+            echo '<td><form action="student_choice.php" method="get">
+            <input type="hidden" name="code" value="' . $row["code"] . '">
+            <input type="hidden" name="admin_code" value="' . $_GET["code"] . '">
+            <button type="submit" class="btn btn-warning">Keisti pasirinkimus</button>
+            </form>
+            </td>';
             echo '<td><form action="remove_student.php" method="post">
             <input type="hidden" name="student_id" value="' . $row["student_id"] . '">
             <input type="submit" name="delete_button" value="Ištrinti mokinį" class="btn btn-danger">
@@ -102,6 +119,9 @@ if (!isset($_SESSION['type'])) {
         </tbody>
       </table>
       <form method="POST" action="add_student.php">
+        <input type="hidden" name="code" value="<?php
+                                                echo $_GET["code"];
+                                                ?>">
         <div class="form-group">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
