@@ -57,7 +57,10 @@ $user_id = $row["user_id"];
     <div class="container">
       <h2>Mokinių sąrašas
         <?php
-        echo "(" . substr($_GET["code"], 0, 7) . ")";
+        echo "(" . substr($_GET["code"], 0, 7) . ") ";
+        if (isset($_GET["superadmin_code"])) {
+          echo '<small class="text-muted"><a href="superadmin_panel.php?code=' . $_GET["superadmin_code"] . '">Grįžti</a></small>';
+        }
         ?>
       </h2>
       <table class="table">
@@ -104,8 +107,11 @@ $user_id = $row["user_id"];
             echo '<td><code>' . $row["code"] . '</code></td>';
             echo '<td><form action="student_choice.php" method="get">
             <input type="hidden" name="code" value="' . $row["code"] . '">
-            <input type="hidden" name="admin_code" value="' . $_GET["code"] . '">
-            <button type="submit" class="btn btn-warning">Keisti pasirinkimus</button>
+            <input type="hidden" name="admin_code" value="' . $_GET["code"] . '">';
+            if (isset($_GET["superadmin_code"])) {
+              echo '<input type="hidden" name="superadmin_code" value="' . $_GET["superadmin_code"] . '">';
+            }
+            echo '<button type="submit" class="btn btn-warning">Keisti pasirinkimus</button>
             </form>
             </td>';
             echo '<td><form action="remove_student.php" method="post">
@@ -122,6 +128,11 @@ $user_id = $row["user_id"];
         <input type="hidden" name="code" value="<?php
                                                 echo $_GET["code"];
                                                 ?>">
+        <?php
+        if (isset($_GET["superadmin_code"])) {
+          echo '<input type="hidden" name="superadmin_code" value="' .  $_GET["superadmin_code"] . '">';
+        }
+        ?>
         <div class="form-group">
           <div class="input-group mb-3">
             <div class="input-group-prepend">

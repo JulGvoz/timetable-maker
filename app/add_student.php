@@ -24,15 +24,7 @@ $row = mysqli_fetch_assoc($result);
 $user_id = $row["user_id"];
 
 if (!isset($_POST['first_name']) || !isset($_POST['last_name'])) {
-  header("Location: admin_panel.php?code=" . $_POST["code"] . "&superadmin_code" = $_POST["superadmin_code"]);
-  exit();
-}
-?>
-<?php
-
-$mysqli = mysqli_connect("localhost", "admin", "Bind-Defeat-Journey-Interest-Sound-Stair-Insurance-Hinder-Influence-Sensitive-4", "users");
-if (mysqli_connect_errno()) {
-  echo "Failed to connect to MySQL: (" . mysqli_connect_errno() . ") " . mysqli_connect_error();
+  header("Location: admin_panel.php?code=" . $_POST["code"] . "&superadmin_code=" . $_POST["superadmin_code"]);
   exit();
 }
 
@@ -46,9 +38,10 @@ mysqli_stmt_execute($statement);
 $last_id = mysqli_insert_id($mysqli);
 
 $statement = mysqli_prepare($mysqli, 'INSERT INTO students (code_id, first_name, last_name, school_id) VALUES (?, ?, ?, ?)');
-mysqli_stmt_bind_param($statement, "issi", $last_id, $_POST['first_name'], $_POST['last_name'], $_SESSION["user_id"]);
+mysqli_stmt_bind_param($statement, "issi", $last_id, $_POST['first_name'], $_POST['last_name'], $user_id);
 mysqli_stmt_execute($statement);
 
-header("Location: admin_panel.php");
+header("Location: admin_panel.php?code=" . $_POST["code"] . "&superadmin_code=" . $_POST["superadmin_code"]);
 exit();
+
 ?>
